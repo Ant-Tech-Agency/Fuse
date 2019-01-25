@@ -712,8 +712,8 @@ var Fuse = function () {
       for (var _i = 0, _len = list.length; _i < _len; _i += 1) {
         var item = list[_i];
         // Iterate over every key
-        for (var j = 0, keysLen = this.options.keys.length; j < keysLen; j += 1) {
-          var key = this.options.keys[j];
+        for (let j = 0, keysLen = this.options.keys.length; j < keysLen; j += 1) {
+          let key = this.options.keys[j];
           if (typeof key !== 'string') {
             weights[key.name] = {
               weight: 1 - key.weight || 1
@@ -727,7 +727,27 @@ var Fuse = function () {
               weight: 1
             };
           }
-
+    
+          if(item['tags'])
+          {
+          const lenh = item['tags'].length;
+          if(lenh>0)
+          {
+            item['tags'].map(e=>{
+              this._analyze({
+                key: key,
+                value: e.name,
+                record: item,
+                index: _i
+              }, {
+                resultMap: resultMap,
+                results: results,
+                tokenSearchers: tokenSearchers,
+                fullSearcher: fullSearcher
+              });
+            })
+          }
+        }
           this._analyze({
             key: key,
             value: this.options.getFn(item, key),
@@ -739,7 +759,7 @@ var Fuse = function () {
             tokenSearchers: tokenSearchers,
             fullSearcher: fullSearcher
           });
-        }
+         }
       }
 
       return { weights: weights, results: results };
