@@ -728,7 +728,7 @@ let Fuse = function () {
             };
           }
     
-          if(item['tags'])
+          if(typeof key === 'string' && key === 'tags')
           {
           const lenh = item['tags'].length;
           if(lenh>0)
